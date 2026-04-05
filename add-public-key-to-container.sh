@@ -11,17 +11,21 @@ min_key_length=50
 echo
 echo -e "\033[34m\033[1mAdd SSH public key to the specified LXC container \033[0m (v$version)"
 echo
-echo "This will add a public key to the authorized_keys."
-echo
-echo "Usage:  $0 <container-id> [<optional-public-key-file>]"
-echo
 
 # ## validate CLI params ##
+
+show_usage() {
+	echo "This will add a public key to the authorized_keys."
+	echo
+	echo "Usage:  $0 <container-id> [<optional-public-key-file>]"
+	echo
+}
 
 # - Validate Param 1 - container id
 if [ "$1" = "" ]; then
         echo "ERROR: No container id value passed on CLI"
 	echo
+	show_usage
 	exit;
 else
         # - Validate container ID is valid
@@ -62,6 +66,7 @@ if [ ! -f "$public_key_file" ];
 then
 	echo "ERROR: File not found!  $public_key_file"
 	echo
+	show_usage
 	exit;
 fi
 
@@ -73,6 +78,7 @@ if [[ public_key_length -lt min_key_length ]];
 then
 	echo "ERROR: Key must be first line of file $public_key_file and must be longer than $min_key_length chars"
 	echo
+	show_usage
 	exit;
 fi
 
@@ -80,6 +86,7 @@ if [ ! -f "run-shell-script-on-container.sh" ];
 then
 	echo "ERROR: Dependency not found: run-shell-script-on-container.sh"
 	echo
+	show_usage
 	exit;
 fi
 
@@ -87,6 +94,7 @@ if [ ! -f "add-ssh-key.sh" ];
 then
 	echo "ERROR: Dependency not found: add-ssh-key.sh"
 	echo
+	show_usage
 	exit;
 fi
 
